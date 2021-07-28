@@ -8,12 +8,14 @@
     <title>{{ .title }}</title>
 </head>
 <body>
+    <a href="/user/create">添加</a>
     <table border="1">
         <thead>
             <tr>
                 <th>编号</th>
                 <th>姓名</th>
                 <th>年龄</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
@@ -22,9 +24,32 @@
                 <td>{{ .Id }}</td>
                 <td>{{ .Name }}</td>
                 <td>{{ .Age }}</td>
+                <td>
+                    <a href="/user/edit/{{ .Id }}">编辑</a>
+                    <a href="javascript:;" onclick="deleteRow('{{ .Id }}')">删除</a>
+                </td>
             </tr>
             {{ end }}
         </tbody>
     </table>
 </body>
 </html>
+<script>
+    function deleteRow(id) {
+        const xhr = new XMLHttpRequest()
+        xhr.open("post", "/user/delete")
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        xhr.responseType = "json"
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const res = xhr.response
+                if (res.code === 0) {
+                    window.location.reload()
+                } else {
+                    alert(res.msg)
+                }
+            }
+        }
+        xhr.send("id=" + id)
+    }
+</script>

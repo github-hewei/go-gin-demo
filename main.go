@@ -23,6 +23,10 @@ func main() {
 	r.GET("/ping", Ping)
 
 	r.GET("/user", user.Lists)
+	r.GET("/user/create", user.Create)
+	r.GET("/user/edit/:id", user.Edit)
+	r.POST("/user/save", user.Save)
+	r.POST("/user/delete", user.Delete)
 
 	r.Run(":8080")
 }
